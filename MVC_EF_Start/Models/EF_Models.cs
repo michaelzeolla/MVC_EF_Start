@@ -3,6 +3,30 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVC_EF_Start.Models
 {
+
+    //this following code is for LINQ practice in class
+  public class Student
+    {
+        public int StudentID { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public List<Course> courses { get; set; }
+    }
+
+  public class Course
+    {
+        public float CourseID { get; set; }
+        public int credits {  get; set; }
+        public string courseName { get; set; }
+        //list needed here too?
+    }
+
+    public class StudentCourse
+    {
+        public Student Student { get; set; }
+        public Course Course { get; set; }
+    }
+    //this is code from the original repository
   public class Company
   {
     [Key]
@@ -37,4 +61,15 @@ namespace MVC_EF_Start.Models
   {
     public Quote[] chart { get; set; }
   }
+
+ //this following code is practice in class, example along with Assignment 3 for Assignment 4
+ public class Arrests
+    {
+        [Key]
+        public string year { get; set; }
+        public string offenseType { get; set; }
+        public float numberOfArrests { get; set; }
+    }
+
+
 }
