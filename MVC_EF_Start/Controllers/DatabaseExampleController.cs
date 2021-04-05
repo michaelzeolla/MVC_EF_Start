@@ -25,152 +25,98 @@ namespace MVC_EF_Start.Controllers
 
         public async Task<ViewResult> DatabaseOperations()
         {
-            //Populate some data into student and course tables for LINQ Practice in class
-            Student Student1 = new Student();
-            Student1.StudentID = 12345;
-            Student1.firstName = "Michael";
-            Student1.lastName = "Zeolla";
+            Order Order1 = new Order();
+            //Order1.id = 1234;
+            Order1.totalItems = 2;
+            Order1.totalPrice = 11;
+            Order1.date = "04/04/2021";
 
-            Student Student2 = new Student();
-            Student2.StudentID = 12346;
-            Student2.firstName = "Samrat";
-            Student2.lastName = "Korupolu";
+            Order Order2 = new Order();
+            Order2.totalItems = 2;
+            Order2.totalPrice = 9;
+            Order2.date = "04/03/2021";
 
-            Course DIS = new Course();
-            DIS.CourseID = "ISM6225";
-            DIS.courseName = "Distributed Information Systems";
-            DIS.credits = 3;
-            
-            Course SDM = new Course();
-            DIS.CourseID = "ISM6137";
-            DIS.courseName = "Statistical Data Mining";
-            DIS.credits = 3;
+            Product Product1 = new Product();
+            //Product1.id = 4312;
+            Product1.name = "Doritos";
+            Product1.brand = "Frito Lay";
+            Product1.price = 5;
 
-            Course DVIZ = new Course();
-            DVIZ.CourseID = "ISM6419";
-            DVIZ.courseName = "Data Visualization";
-            DVIZ.credits = 3;
+            Product Product2 = new Product();
+            //Product2.id = 4321;
+            Product2.name = "Oreos";
+            Product2.brand = "Nabisco";
+            Product2.price = 6;
 
-            StudentCourse sc1 = new StudentCourse();
-            sc1.Student = Student1;
-            sc1.Course = DIS;
+            Product Product3 = new Product();
+            Product3.name = "Life Savers";
+            Product3.brand = "Mars";
+            Product3.price = 3;
 
-            dbContext.Students.Add(Student1);
-            dbContext.Students.Add(Student2);
-            dbContext.Courses.Add(DIS);
-            dbContext.Courses.Add(SDM);
-            dbContext.Courses.Add(DVIZ);
+            OrderItem orderItem1 = new OrderItem
+            {
+                PurchasedItem = Product1,
+                PlacedOrder = Order1
 
-            dbContext.SaveChanges();
-            
+            };
 
+            OrderItem orderItem2 = new OrderItem
+            {
+                PurchasedItem = Product2,
+                PlacedOrder = Order1
+            };
 
-            // CREATE operation
-            //For my simple Arrests example:
-            Arrests USA = new Arrests();
-            USA.year = "2019";
-            USA.offenseType = "Drug";
-            USA.numberOfArrests = 1239909;
+            OrderItem orderItem3 = new OrderItem
+            {
+                PurchasedItem = Product2,
+                PlacedOrder = Order2
+            };
 
-            dbContext.Arrests.Add(USA);
+            OrderItem orderItem4 = new OrderItem
+            {
+                PurchasedItem = Product3,
+                PlacedOrder = Order2
+            };
+          
 
-            dbContext.SaveChanges();
+            dbContext.Orders.Add(Order1);
+            dbContext.Orders.Add(Order2);
+            dbContext.Products.Add(Product1);
+            dbContext.Products.Add(Product2);
+            dbContext.Products.Add(Product3);
+            dbContext.OrderItems.Add(orderItem1);
+            dbContext.OrderItems.Add(orderItem2);
+            dbContext.OrderItems.Add(orderItem3);
+            dbContext.OrderItems.Add(orderItem4);
 
-            Company MyCompany = new Company();
-            MyCompany.symbol = "MCOB";
-            MyCompany.name = "ISM";
-            MyCompany.date = "ISM";
-            MyCompany.isEnabled = true;
-            MyCompany.type = "ISM";
-            MyCompany.iexId = "ISM";
-
-            Quote MyCompanyQuote1 = new Quote();
-            //MyCompanyQuote1.EquityId = 123;
-            MyCompanyQuote1.date = "11-23-2018";
-            MyCompanyQuote1.open = 46.13F;
-            MyCompanyQuote1.high = 47.18F;
-            MyCompanyQuote1.low = 44.67F;
-            MyCompanyQuote1.close = 47.01F;
-            MyCompanyQuote1.volume = 37654000;
-            MyCompanyQuote1.unadjustedVolume = 37654000;
-            MyCompanyQuote1.change = 1.43F;
-            MyCompanyQuote1.changePercent = 0.03F;
-            MyCompanyQuote1.vwap = 9.76F;
-            MyCompanyQuote1.label = "Nov 23";
-            MyCompanyQuote1.changeOverTime = 0.56F;
-            MyCompanyQuote1.symbol = "MCOB";
-
-            Quote MyCompanyQuote2 = new Quote();
-            //MyCompanyQuote1.EquityId = 123;
-            MyCompanyQuote2.date = "11-23-2018";
-            MyCompanyQuote2.open = 46.13F;
-            MyCompanyQuote2.high = 47.18F;
-            MyCompanyQuote2.low = 44.67F;
-            MyCompanyQuote2.close = 47.01F;
-            MyCompanyQuote2.volume = 37654000;
-            MyCompanyQuote2.unadjustedVolume = 37654000;
-            MyCompanyQuote2.change = 1.43F;
-            MyCompanyQuote2.changePercent = 0.03F;
-            MyCompanyQuote2.vwap = 9.76F;
-            MyCompanyQuote2.label = "Nov 23";
-            MyCompanyQuote2.changeOverTime = 0.56F;
-            MyCompanyQuote2.symbol = "MCOB";
-
-            dbContext.Companies.Add(MyCompany);
-            dbContext.Quotes.Add(MyCompanyQuote1);
-            dbContext.Quotes.Add(MyCompanyQuote2);
 
             dbContext.SaveChanges();
-
-            // READ operation
-            //Read for my Arrests Example
-            
-            Company CompanyRead1 = dbContext.Companies
-                                    .Where(c => c.symbol == "MCOB")
-                                    .First();
-
-            Company CompanyRead2 = dbContext.Companies
-                                    .Include(c => c.Quotes)
-                                    .Where(c => c.symbol == "MCOB")
-                                    .First();
-
-            // UPDATE operation
-            CompanyRead1.iexId = "MCOB";
-            dbContext.Companies.Update(CompanyRead1);
-            //dbContext.SaveChanges();
-            await dbContext.SaveChangesAsync();
-
-            // DELETE operation
-            //dbContext.Companies.Remove(CompanyRead1);
-            //await dbContext.SaveChangesAsync();
 
             return View();
         }
 
         public ViewResult LINQOperations()
         {
-            Company CompanyRead1 = dbContext.Companies
-                                            .Where(c => c.symbol == "MCOB")
+            Product ProductRead1 = dbContext.Products
+                                            .Include(o => o.ProductOrders)
+                                            .Where(o => o.name == "Oreos")
                                             .First();
+            //Product ProductRead2 = dbContext.Products
+            //                                .Include(p => p.ProductOrders.Select(c => c.PlacedOrder.totalPrice))
+            //                                .Where(p => p.name == "Oreos")
+            //                                .First();
+            //Order OrderRead1 = dbContext.Products
+            //                            .Include(p => p.ProductOrders)
+            //                            .Where(p => p.name == "Oreos")
+            //                            .
+            //Order OrderRead2 = dbContext.Orders
+            //                            .Include(o => o.ItemsInOrder.Select(c => c.PurchasedItem))
+            //                            )
+            //                            .OrderByDescending(o => o.totalPrice)
+            //                            .FirstOrDefault();
 
-            Company CompanyRead2 = dbContext.Companies
-                                            .Include(c => c.Quotes)
-                                            .Where(c => c.symbol == "MCOB")
-                                            .First();
-
-            Quote Quote1 = dbContext.Companies
-                                    .Include(c => c.Quotes)
-                                    .Where(c => c.symbol == "MCOB")
-                                    .FirstOrDefault()
-                                    .Quotes
-                                    .FirstOrDefault();
 
             return View();
-
-
-            Student Student1 = dbContext.Students
-                                        .Include(s => s.Courses)
-                                        .Where
         }
 
     }
